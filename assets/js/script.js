@@ -51,4 +51,16 @@ var createTaskEl = function(taskDataObj) {
     taskIdCounter++;
 }
 
+// parameter of taskId below. this passes a different id into the function each time
+var createTaskActions = function(taskId) {
+    var actionContainerEl = document.createElement("div");
+    actionContainerEl.className = "task-actions";
+
+    // create edit button
+    var editButtonEl = document.createElement("button");
+        editButtonEl.textContent = "Edit";
+        editButtonEl.className = "btn edit-btn";
+        editButtonEl.setAttribute("data-task-id" , taskId);
+};
+
 formEl.addEventListener("submit", taskFormHandler);
