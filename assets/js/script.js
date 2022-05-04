@@ -44,6 +44,10 @@ var createTaskEl = function(taskDataObj) {
 
     listItemEl.appendChild(taskInfoEl);
 
+    // count the task in the task counter and add action buttons to task
+    var taskActionsEl = createTaskActions(taskIdCounter);
+        listItemEl.appendChild(taskActionsEl);
+
     // add entire list item to list
     tasksToDoEl.appendChild(listItemEl);
 
@@ -61,6 +65,32 @@ var createTaskActions = function(taskId) {
         editButtonEl.textContent = "Edit";
         editButtonEl.className = "btn edit-btn";
         editButtonEl.setAttribute("data-task-id" , taskId);
+    actionContainerEl.appendChild(editButtonEl);
+
+    // create delete button
+    var deleteButtonEl = document.createElement("button");
+        deleteButtonEl.textContent = "Delete";
+        deleteButtonEl.className = "btn delete-btn";
+        deleteButtonEl.setAttribute("data-task-id" , taskId);
+    actionContainerEl.appendChild(deleteButtonEl);
+
+    // create select element for status
+    var statusSelectEl = document.createElement("select");
+        statusSelectEl.className = "select-status";
+        statusSelectEl.setAttribute("data-task-id" , taskId);
+    actionContainerEl.appendChild(statusSelectEl);
+
+    // for loop for status dropdown options
+    var statusChoices = ["To Do" , "In Progress" , "Complete"];
+        for(var i = 0; i < statusChoices.length; i++) {
+            // create option element
+            var statusOptionEl = document.createElement("option");
+            statusOptionEl.textContent = statusChoices[i];
+            statusOptionEl.setAttribute("value" , statusChoices[i]);
+            statusSelectEl.appendChild(statusOptionEl);
+        }
+
+    return actionContainerEl;
 };
 
 formEl.addEventListener("submit", taskFormHandler);
