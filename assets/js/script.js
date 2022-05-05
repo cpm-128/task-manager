@@ -241,18 +241,54 @@ var saveTasks = function() {
 var loadTasks = function() {
     // get tasks from local storage
     var savedTasks = localStorage.getItem("tasks");
-        // if there are no tasks, set tasks to an empty array and return out of the function
+    console.log("Saved tasks found.");
+    // this confirms the correct status is being brought it and other task data
+    console.log(savedTasks);
+
+    // if there are no tasks, set tasks to an empty array and return out of the function
         if (!savedTasks) {
+            var tasks = []
             return false;
         }
-        console.log("Saved tasks found.");
-        // if there are saved tasks, convert taks from a string back into an array of objects
-        savedTasks = JSON.parse(savedTasks);
-            // loopthrough a task array and create task element on the page
-            for (var i = 0; i < savedTasks.length; i++) {
-                // pass each task object into the createTaskEl function
-                createTaskEl(savedTasks[i]);
+
+    // get the tasks into an object array
+    // ??? NEED HELP HERE. console.log() is not showing the savedTasks are being brought in as an array. 4.4.6 Get The Tasks Into An Object Array
+        tasks = JSON.parse(tasks); // ??? not sure this is right, both supposed to be tasks
+        console.log();
+
+    // loop through a task array and create task element on the page
+        for (var i = 0; i < tasks.length; i++) {
+
+            var listItemEl = document.createElement("li");
+                listItemEl.className = "task-item";
+                listItemEl.setAttribute("data-task-id", tasks[i].id);
+                console.log(tasks[i]);
+
+            var taskInfoEl = document.createElement("div");
+                taskInfoEl.className = "task-info";
+                taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+
+            listItemEl.appendChild(taskInfoEl);
             }
+    
+    // create the actions for the task
+        var taskActionsEl  = createTaskActions(tasks[i].id);
+        listItemEl.appendChild(taskActionsEl);
+
+    // check the values of the status
+    if (tasks[i].status = "to do") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
+        tasksToDoEl.appendChild(listItemEl);
+    } else if (tasks[i].status = "in progress") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
+        tasksCompletedEl.appendChild(listItemEl);
+    } else if (tasks[i].status = "complete") {
+        listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
+        tasksCompletedEl.appendChild(listItemEl);
+    }
+    // give tasks a unique id during each iteration of the loop
+    taskIdCounter++;
+    console.log(listItemEl);
 };
 
 // evnet listener for delete button on #page-content
