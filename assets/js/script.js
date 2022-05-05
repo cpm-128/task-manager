@@ -58,6 +58,7 @@ var createTaskEl = function(taskDataObj) {
     var taskInfoEl = document.createElement("div");
         // give it a class name
         taskInfoEl.className = "task-info";
+
         // add HTML content to div
         taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
 
@@ -241,9 +242,8 @@ var saveTasks = function() {
 var loadTasks = function() {
     // get tasks from local storage
     var savedTasks = localStorage.getItem("tasks");
-    console.log("Saved tasks found.");
+    console.log("Saved tasks found." , savedTasks);
     // this confirms the correct status is being brought it and other task data
-    console.log(savedTasks);
 
     // if there are no tasks, set tasks to an empty array and return out of the function
         if (!savedTasks) {
@@ -253,17 +253,18 @@ var loadTasks = function() {
 
     // get the tasks into an object array
     // ??? NEED HELP HERE. console.log() is not showing the savedTasks are being brought in as an array. 4.4.6 Get The Tasks Into An Object Array
-        tasks = JSON.parse(tasks); // ??? not sure this is right, both supposed to be tasks
-        console.log();
+        tasks = JSON.parse(savedTasks);  // ??? not sure this is right, both supposed to be tasks
+        console.log(tasks);
 
+    //**PUT ALL THIS BACK WHEN THE ARRAY WORKS**
     // loop through a task array and create task element on the page
-        for (var i = 0; i < tasks.length; i++) {
+        for (var i = 0; i < tasks.length - 1; i++) {
 
             var listItemEl = document.createElement("li");
                 listItemEl.className = "task-item";
                 listItemEl.setAttribute("data-task-id", tasks[i].id);
                 console.log(tasks[i]);
-
+                console.log(listItemEl);
             var taskInfoEl = document.createElement("div");
                 taskInfoEl.className = "task-info";
                 taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
@@ -273,6 +274,7 @@ var loadTasks = function() {
     
     // create the actions for the task
         var taskActionsEl  = createTaskActions(tasks[i].id);
+        console.log(taskActionsEl);
         listItemEl.appendChild(taskActionsEl);
 
     // check the values of the status
