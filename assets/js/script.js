@@ -4,6 +4,7 @@ var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
 var formEl = document.querySelector("#task-form");
 var taskIdCounter = 0;
+var tasks = [];
 
 var taskFormHandler = function(event) {
     event.preventDefault(); //this prevents the browser from immediately refreshing
@@ -22,7 +23,8 @@ var taskFormHandler = function(event) {
     // define inputted data as an object
     var taskDataObj = {
         name: taskNameInput,
-        type: taskTypeInput
+        type: taskTypeInput,
+        // STATUS HERE?
     };
 
     // ability to use same form halndler for new and old tasks via task id
@@ -37,7 +39,8 @@ var taskFormHandler = function(event) {
     else {
         var taskDataObj = {
             name: taskNameInput,
-            type: taskTypeInput
+            type: taskTypeInput,
+            status: "to do"  // NOTE SURE THIS IS RIGHT?
         };
         createTaskEl(taskDataObj);
     }
@@ -47,13 +50,21 @@ var taskFormHandler = function(event) {
 var completeEditTask = function(taskName, taskType, taskId) {
     //find the matching task list item
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-    
+
     //set new values
     taskSelected.querySelector("h3.task-name").textContent = taskName;
     taskSelected.querySelector("span.task-type").textContent = taskType;
-    
+
+    // loop through tasks array and task object with new content
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i]. id  === parseInt(taskId)) {
+            tasks[i].name = taskName;
+            tasks[i].type = taskType;
+        }
+    };
+
     alert("Task updated.");
-    
+
     // reset the form and remote the task id
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Save Task";
@@ -76,6 +87,10 @@ var createTaskEl = function(taskDataObj) {
 
     listItemEl.appendChild(taskInfoEl);
 
+    // get the id and push this to the obj by adding any content in the () to the end ofthe specificed array
+    taskDataObj.id = taskIdCounter;
+    tasks.push(taskDataObj);
+
     // count the task in the task counter and add action buttons to task
     var taskActionsEl = createTaskActions(taskIdCounter);
         listItemEl.appendChild(taskActionsEl);
@@ -85,7 +100,10 @@ var createTaskEl = function(taskDataObj) {
 
     // increase task counter for next unique id
     taskIdCounter++;
-}
+
+    console.log(taskDataObj);
+    console.log(taskDataObj.status);
+};
 
 // parameter of taskId below. this passes a different id into the function each time
 var createTaskActions = function(taskId) {
@@ -189,6 +207,13 @@ var taskStatusChangeHandler = function(event) {
         tasksCompletedEl.appendChild(taskSelected);
     }
 
+    // update task's in tasks array
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === parseInt(taskId)) {
+            tasks[i].status = statusValue;
+        }
+    }
+    console.log(tasks);
 };
 
 // evnet listener for delete button on #page-content
