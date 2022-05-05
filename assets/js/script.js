@@ -20,12 +20,12 @@ var taskFormHandler = function(event) {
     // reset the form to blanks to increase user experience
     formEl.reset();
 
-    // define inputted data as an object
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput,
-        // STATUS HERE?
-    };
+    // // define inputted data as an object
+    // var taskDataObj = {
+    //     name: taskNameInput,
+    //     type: taskTypeInput,
+    //     // STATUS HERE?
+    // };
 
     // ability to use same form halndler for new and old tasks via task id
     var isEdit = formEl.hasAttribute("data-task-id");
@@ -44,32 +44,6 @@ var taskFormHandler = function(event) {
         };
         createTaskEl(taskDataObj);
     }
-};
-
-// editing a task is taking the original task and updating it
-var completeEditTask = function(taskName, taskType, taskId) {
-    //find the matching task list item
-    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-
-    //set new values
-    taskSelected.querySelector("h3.task-name").textContent = taskName;
-    taskSelected.querySelector("span.task-type").textContent = taskType;
-
-    // loop through tasks array and task object with new content
-    for (var i = 0; i < tasks.length; i++) {
-        if (tasks[i]. id  === parseInt(taskId)) {
-            tasks[i].name = taskName;
-            tasks[i].type = taskType;
-        }
-    };
-
-    alert("Task updated.");
-
-    // reset the form and remote the task id
-    formEl.removeAttribute("data-task-id");
-    document.querySelector("#save-task").textContent = "Save Task";
-
-    saveTasks();
 };
 
 var createTaskEl = function(taskDataObj) {
@@ -144,8 +118,33 @@ var createTaskActions = function(taskId) {
     return actionContainerEl;
 };
 
-formEl.addEventListener("submit", taskFormHandler);
+// editing a task is taking the original task and updating it
+var completeEditTask = function(taskName, taskType, taskId) {
+    //find the matching task list item
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
+    //set new values
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    // loop through tasks array and task object with new content
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i]. id  === parseInt(taskId)) {
+            tasks[i].name = taskName;
+            tasks[i].type = taskType;
+        }
+    }
+
+    alert("Task updated.");
+
+    // reset the form and remote the task id
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Save Task";
+
+    saveTasks();
+};
+
+formEl.addEventListener("submit", taskFormHandler);
 
 // edit a task
 var editTask = function(taskId) {
@@ -233,8 +232,27 @@ var taskStatusChangeHandler = function(event) {
     saveTasks();
 };
 
+// save tasks to local storage
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks)); // this jSON.stringify is necessary bc local storage only works with strings, so we need to convert the array
+};
+
+// load tasks from local storage
+var loadTasks = function() {
+    // get tasks from local storage
+    var savedTasks = localStorage.getItem("tasks");
+        // if there are no tasks, set tasks to an empty array and return out of the function
+        if (!savedTasks) {
+            return false;
+        }
+        console.log("Saved tasks found.");
+        // if there are saved tasks, convert taks from a string back into an array of objects
+        savedTasks = JSON.parse(savedTasks);
+            // loopthrough a task array and create task element on the page
+            for (var i = 0; i < savedTasks.length; i++) {
+                // pass each task object into the createTaskEl function
+                createTaskEl(savedTasks[i]);
+            }
 };
 
 // evnet listener for delete button on #page-content
@@ -242,3 +260,5 @@ pageContentEl.addEventListener("click" , taskButtonHandler);
 
 // event listener for chaging status of task
 pageContentEl.addEventListener("change" , taskStatusChangeHandler);
+
+loadTasks();
