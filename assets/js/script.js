@@ -68,6 +68,8 @@ var completeEditTask = function(taskName, taskType, taskId) {
     // reset the form and remote the task id
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Save Task";
+
+    saveTasks();
 };
 
 var createTaskEl = function(taskDataObj) {
@@ -101,8 +103,7 @@ var createTaskEl = function(taskDataObj) {
     // increase task counter for next unique id
     taskIdCounter++;
 
-    console.log(taskDataObj);
-    console.log(taskDataObj.status);
+    saveTasks();
 };
 
 // parameter of taskId below. this passes a different id into the function each time
@@ -181,6 +182,7 @@ var deleteTask = function(taskId) {
 
     // reassign tasks array to be the same as the updatedTaskArr
     tasks = updatedTaskArr;
+    saveTasks();
 };
 
 // if the delete button on a task is clicked, get the task id and call the delete function
@@ -227,7 +229,12 @@ var taskStatusChangeHandler = function(event) {
             tasks[i].status = statusValue;
         }
     }
-    console.log(tasks);
+
+    saveTasks();
+};
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // this jSON.stringify is necessary bc local storage only works with strings, so we need to convert the array
 };
 
 // evnet listener for delete button on #page-content
