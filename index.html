@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Task Manager</title>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="page-title">Task Manager</h1>
+        <p>Click the button to add a new task.</p>
+        <form id="task-form">
+            <div class="form-group">
+                <input type="text" name="task-name" placeholder="Enter Task Here" />
+            </div>
+            <div class="form-group">
+                <select name="task-type" class="select-dropdown">
+                    <option value="" disabled selected>Category</option>
+                    <option value="Print">Print</option>
+                    <option value="Web">Web</option>
+                    <option value="Mobile">Mobile</option>
+                </select>
+            </div>
+            <div clas="form-group">
+                <button class="btn" id="save-task">Add Task</button>
+            </div>
+        </form>
+    </header>
+
+    <main class="page-content" id="page-content">
+
+        <!-- TO LIST -->
+        <section class="task-list-wrapper">
+            <h2 class="list-title">To Do</h2>
+            <ul class="task-list" id="tasks-to-do">
+            </ul>
+        </section>
+        <!-- END TO DO LIST -->
+
+        <!-- IN PROGRESS LIST -->
+        <section class="task-list-wrapper">
+            <h2 class="list-title">In Progress</h2>
+            <ul class="task-list" id="tasks-in-progress">
+            </ul>
+        </section>
+        <!-- END IN PROGRESS LIST -->
+
+        <!-- COMPLETE LIST -->
+        <section class="task-list-wrapper">
+            <h2 class="list-title">Complete</h2>
+            <ul class="task-list" id="tasks-completed">
+            </ul>
+        </section>
+        <!-- END COMPLETE LIST -->
+
+    </main>
+
+    <footer>
+        <p>&copy;2022 by CPM</p>
+    </footer>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>
