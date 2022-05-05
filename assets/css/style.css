@@ -3,15 +3,15 @@
 }
 
 :root {
-  --primary: #44e9ff;
-  --secondary: #497980;
-  --tertiary: rgb(192, 246, 253);
-  --grey: #333;
+  --primary: #ffffff;
+  --secondary: rgb(32,85,107);
+  --tertiary: rgb(195,193,186);
+  --grey: #000000;
   font-size: 62.5%;
 }
 
 body {
-  background: #ededed;
+  background: var(--tertiary);
   color: var(--grey);
   margin: 0;
   padding: 0;
@@ -92,13 +92,14 @@ footer {
 .list-title {
   color: var(--secondary);
   font-size: 2.6rem;
+  text-shadow: 1px 1px 2px #ffffff;
 }
 
 .task-list {
   list-style: none;
   padding: 15px;
   height: calc(100% - 50px);
-  background: rgb(196, 196, 196);
+  background: var(--primary);
   border-radius: 12px;
   border: 2px solid var(--grey);
 }
@@ -139,7 +140,7 @@ footer {
   border: none;
   display: inline-block;
   padding: 10px 15px;
-  background: var(--primary);
+  background: var(--tertiary);
   font-size: 2.2rem;
   border-radius: 12px;
   position: relative;
@@ -162,14 +163,14 @@ footer {
   padding: 5px 7px;
   margin: 3px;
   background: var(--secondary);
-  color: #fff;
+  color: var(--primary);
 }
 
 .select-dropdown,
 .select-status {
   display: block;
   font-size: 2.2rem;
-  color: #444;
+  color: #888;
   padding: 12px;
   width: 100%;
   max-width: 100%;
