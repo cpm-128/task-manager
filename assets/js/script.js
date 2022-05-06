@@ -145,46 +145,6 @@ var completeEditTask = function(taskName, taskType, taskId) {
     saveTasks();
 };
 
-formEl.addEventListener("submit", taskFormHandler);
-
-// edit a task
-var editTask = function(taskId) {
-
-    // get task list item element
-    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-
-    // get content from task name and type
-    var taskName = taskSelected.querySelector("h3.task-name").textContent;
-
-    var taskType = taskSelected.querySelector("span.task-type").textContent;
-
-    document.querySelector("input[name='task-name']").value = taskName;
-    document.querySelector("select[name='task-type']").value = taskType;
-    document.querySelector("#save-task").textContent = "Save Task";
-    formEl.setAttribute("data-task-id" , taskId);
-};
-
-// delete a task
-var deleteTask = function(taskId) {
-    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-    taskSelected.remove()
-
-    // create a new array to hold updated lists of tasks
-    var updatedTaskArr = [];
-
-    // loop through current tasks
-    for (var i = 0; i < tasks.length; i++) {
-        // if tasks[i].id does NOT match the value of taskId we want to delete, push it into the new array
-        if (tasks[i].id !== parseInt(taskId)) {
-            updatedTaskArr.push(tasks[i]);
-        }
-    }
-
-    // reassign tasks array to be the same as the updatedTaskArr
-    tasks = updatedTaskArr;
-    saveTasks();
-};
-
 // if the delete button on a task is clicked, get the task id and call the delete function
 var taskButtonHandler = function(event) {
     // get target element from event
@@ -233,6 +193,44 @@ var taskStatusChangeHandler = function(event) {
     saveTasks();
 };
 
+// edit a task
+var editTask = function(taskId) {
+
+    // get task list item element
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    // get content from task name and type
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+    document.querySelector("#save-task").textContent = "Save Task";
+    formEl.setAttribute("data-task-id" , taskId);
+};
+
+// delete a task
+var deleteTask = function(taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    taskSelected.remove()
+
+    // create a new array to hold updated lists of tasks
+    var updatedTaskArr = [];
+
+    // loop through current tasks
+    for (var i = 0; i < tasks.length; i++) {
+        // if tasks[i].id does NOT match the value of taskId we want to delete, push it into the new array
+        if (tasks[i].id !== parseInt(taskId)) {
+            updatedTaskArr.push(tasks[i]);
+        }
+    }
+
+    // reassign tasks array to be the same as the updatedTaskArr
+    tasks = updatedTaskArr;
+    saveTasks();
+};
+
 // save tasks to local storage
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks)); // this jSON.stringify is necessary bc local storage only works with strings, so we need to convert the array
@@ -247,53 +245,23 @@ var loadTasks = function() {
 
     // if there are no tasks, set tasks to an empty array and return out of the function
         if (!savedTasks) {
-            var tasks = []
             return false;
         }
 
     // get the tasks into an object array
-    // ??? NEED HELP HERE. console.log() is not showing the savedTasks are being brought in as an array. 4.4.6 Get The Tasks Into An Object Array
-        tasks = JSON.parse(savedTasks);  // ??? not sure this is right, both supposed to be tasks
-        console.log(tasks);
+    savedTasks = JSON.parse(savedTasks);
+        console.log(savedTasks); // confirms all data is being brough in as an array WITH THE CORRECT STATUS after reloading page
 
-    //**PUT ALL THIS BACK WHEN THE ARRAY WORKS**
-    // loop through a task array and create task element on the page
-        for (var i = 0; i < tasks.length - 1; i++) {
-
-            var listItemEl = document.createElement("li");
-                listItemEl.className = "task-item";
-                listItemEl.setAttribute("data-task-id", tasks[i].id);
-                console.log(tasks[i]);
-                console.log(listItemEl);
-            var taskInfoEl = document.createElement("div");
-                taskInfoEl.className = "task-info";
-                taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
-
-            listItemEl.appendChild(taskInfoEl);
-            }
-    
-    // create the actions for the task
-        var taskActionsEl  = createTaskActions(tasks[i].id);
-        console.log(taskActionsEl);
-        listItemEl.appendChild(taskActionsEl);
-
-    // check the values of the status
-    if (tasks[i].status = "to do") {
-        listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
-        tasksToDoEl.appendChild(listItemEl);
-    } else if (tasks[i].status = "in progress") {
-        listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
-        tasksCompletedEl.appendChild(listItemEl);
-    } else if (tasks[i].status = "complete") {
-        listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
-        tasksCompletedEl.appendChild(listItemEl);
+    for (var i = 0; i < savedTasks.length; i++) {
+        // pass each tash object into the createTaskEl function
+        createTaskEl(savedTasks[i]);
     }
-    // give tasks a unique id during each iteration of the loop
-    taskIdCounter++;
-    console.log(listItemEl);
 };
 
-// evnet listener for delete button on #page-content
+// create a new task
+formEl.addEventListener("submit", taskFormHandler);
+
+// evnet listener for delete and edit button on #page-content
 pageContentEl.addEventListener("click" , taskButtonHandler);
 
 // event listener for chaging status of task
